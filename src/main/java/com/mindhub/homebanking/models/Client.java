@@ -11,51 +11,42 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private Long ID;
+    private Long id;
 
-    private String email;
     private String firstName;
     private String lastName;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
-    private Set<Account> accounts = new HashSet<>();
+    private String email;
 
-    public Client() {
+    public Client() { }
+
+    public Client(String first, String last, String mail) {
+        firstName = first;
+        lastName = last;
+        email= mail;
     }
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    Set<Account> accounts = new HashSet<>();
 
-    public Client(Long ID, String firstName, String lastName, String email) {
-        this.ID = ID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public Set<Account> getAccounts() {
+        return accounts;
     }
-
-    public Client(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public void addAccount(Account account){
+        account.setOwner(this);
+        accounts.add(account);
     }
-
-    public Long getID() {
-        return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
-
-    public String getfirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setfirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getlastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setlastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -63,21 +54,15 @@ public class Client {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String mail) {
+        this.email = mail;
     }
 
     public String toString() {
         return firstName + " " + lastName + " " + email;
     }
 
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
+    public Long getId() {
+        return null;
     }
-
-    public void addAccount(Account account) {
-        account.setClient(this);
-        this.accounts.add(account);
-    }
-
 }
